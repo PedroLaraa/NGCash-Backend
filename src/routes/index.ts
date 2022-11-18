@@ -1,6 +1,6 @@
 import { Router } from 'express'
 
-import { MakeTransaction } from '../controllers/transaction/MakeTransaction.ts'
+import { MakeTransaction } from '../controllers/transaction/MakeTransaction'
 
 import { UserCreate } from '../controllers/user/UserCreate'
 import { UserLogin } from '../controllers/user/UserLogin'

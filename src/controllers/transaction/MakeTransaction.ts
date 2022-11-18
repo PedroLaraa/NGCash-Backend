@@ -2,11 +2,15 @@ import { Request, Response } from "express";
 
 import { BadRequestError } from "../../helpers/api-erros";
 
+import { accountRepository } from "../../repositories/accountRepository";
+
 import { transactionRepository } from "../../repositories/transactionRepository";
 
-import bcrypt from 'bcrypt';
+import { userRepository } from "../../repositories/userRepository";
 
-import  jwt  from "jsonwebtoken";
+import { CreditAccount } from "./CreditAccount";
+
+import { DebitAccount } from "./DebitAccount";
 
 export class MakeTransaction {
 
@@ -14,13 +18,59 @@ export class MakeTransaction {
 
         const userLogged = req.user;
 
+        const accountLoggedUser = userLogged.accountId
+
         const {destinatario, valor} = req.body;
-        
-        console.log(userLogged);
 
-        console.log(destinatario, valor);
+        const userExists = await userRepository.findOneBy({username: destinatario});
 
-        return res.json(userLogged);
+        const dataAccount = await accountRepository.findOneBy({id: accountLoggedUser})
+
+        if(!accountLoggedUser){
+            throw new BadRequestError("Faça login para continuar!");
+        };
+
+        if(!userExists){
+            throw new BadRequestError("Destinatário informado inexistente!");
+        };
+
+        const destinatarioId = userExists.accountId
+
+        console.log(userExists)
+
+        if(userLogged.accountId === destinatarioId){
+            throw new BadRequestError("Você não pode transferir para você mesmo!");
+        };
+
+        if(!destinatario){
+            throw new BadRequestError("É necessário inserir o destinatário da transferência!");
+        };
+
+        if(!valor){
+            throw new BadRequestError("É necessário inserir o valor da transferência!");
+        };
+
+        if(!dataAccount){
+            throw new BadRequestError("Conta não encontrada!");
+        };
+
+        if(dataAccount.balance < valor){
+            throw new BadRequestError("Saldo insuficiente!");
+        };
+
+        const transactionData = transactionRepository.create({
+            debitedAccountId: userLogged.accountId, 
+            creditedAccountId: destinatarioId,
+            value: valor
+        });
+
+        new DebitAccount().transaction(valor, accountLoggedUser, req, res)
+
+        new CreditAccount().transaction(valor, destinatarioId, req, res)
+
+        await transactionRepository.save(transactionData);
+
+        return res.json(transactionData);
 
     };
 
