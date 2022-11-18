@@ -7,6 +7,7 @@ import { userRepository } from "../../repositories/userRepository";
 import { validate } from "class-validator"
 
 import bcrypt from 'bcrypt';
+import { accountRepository } from "../../repositories/accountRepository";
 
 export class UserCreate {
 
@@ -14,9 +15,13 @@ export class UserCreate {
         const {username, password} = req.body
 
         const userExists = await userRepository.findOneBy({username})
-
+        
         if(userExists) {
             throw new BadRequestError('User já utilizado!')
+        }
+
+        if(password.length < 8){
+            throw new BadRequestError('Senha deve conter pelo menos 8 caracteres!')
         }
 
         const hashPassword = await bcrypt.hash(password, 10)
@@ -28,11 +33,26 @@ export class UserCreate {
 
         const errors = await validate(newUser)
 
+        const newAccount = accountRepository.create({
+            balance: 100
+        });
+
         if (errors.length > 0) {
             throw new Error(`Usuário ou senha inválidos!`)
         } else {
-            await userRepository.save(newUser);
-    
+
+            await accountRepository.save(newAccount);
+
+            const accId = newAccount.id
+
+            const user = userRepository.create({
+                username,
+                password: hashPassword,
+                accountId: accId
+            })
+
+            await userRepository.save(user);
+
             return res.status(201).json(newUser)
         }
 

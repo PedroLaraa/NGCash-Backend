@@ -14,11 +14,10 @@ export class User {
     username: string
     
     @Column({type: 'text'})
-    @Length(8, 14)
     password: string
 
     @OneToOne(() => Account )
     @JoinColumn()
-    accountId: Account
+    accountId: number
 
 }
