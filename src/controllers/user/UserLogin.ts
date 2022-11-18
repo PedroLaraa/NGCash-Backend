@@ -12,24 +12,29 @@ export class UserLogin {
 
     async login(req: Request, res: Response){
         
-        const {username, password} = req.body
+        const {username, password} = req.body;
 
-        const user = await userRepository.findOneBy({username})
+        const user = await userRepository.findOneBy({username});
 
         if(!user) {
-            throw new BadRequestError('Usuário e/ou senha inválidos!')
+            throw new BadRequestError('Usuário e/ou senha inválidos!');
         }
 
-        const verifyPassword = await bcrypt.compare(password, user.password)
+        const verifyPassword = await bcrypt.compare(password, user.password);
 
         if(!verifyPassword){
-            throw new BadRequestError('Usuário e/ou senha inválidos!')
-        }
+            throw new BadRequestError('Usuário e/ou senha inválidos!');
+        };
 
-        const token = jwt.sign({id: user.id}, process.env.JWT_PASS ?? '', {expiresIn: '24h'})
+        const token = jwt.sign({id: user.id}, process.env.JWT_PASS ?? '', {expiresIn: '24h'});
 
-        
+        const {password:_, ...userLogin} = user;
 
-    }
+        return res.json({
+            user: userLogin,
+            token: token
+        });
 
-}
+    };
+
+};
