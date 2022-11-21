@@ -1,8 +1,11 @@
-import { Column, Entity, PrimaryGeneratedColumn, OneToOne, JoinColumn } from "typeorm";
+
+import { Column, Entity, PrimaryGeneratedColumn, OneToOne, JoinColumn, OneToMany, ManyToOne } from "typeorm";
+import { Transaction } from "./Transaction";
 
 @Entity('Accounts')
 export class Account {
 
+    @OneToMany(() => Transaction, (transaction) => transaction.debitedAccountId)
     @PrimaryGeneratedColumn()
     id: number
 

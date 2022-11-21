@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn, OneToOne, JoinColumn, CreateDateColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn, JoinColumn, CreateDateColumn, OneToMany, ManyToMany, ManyToOne } from "typeorm";
 
 import { Account } from "./Account";
 
@@ -11,11 +11,15 @@ export class Transaction {
     @Column({type: 'numeric'})
     value: number
 
-    @OneToOne(() => Account)
+    @ManyToOne(() => Account, (account) => account.id, {
+        eager: true
+    })
     @JoinColumn()
     creditedAccountId: number
 
-    @OneToOne(() => Account)
+    @ManyToOne(() => Account, (account) => account.id, {
+        eager: true
+    })
     @JoinColumn()
     debitedAccountId: number
 

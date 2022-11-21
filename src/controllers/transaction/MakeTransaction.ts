@@ -36,8 +36,6 @@ export class MakeTransaction {
 
         const destinatarioId = userExists.accountId
 
-        console.log(userExists)
-
         if(userLogged.accountId === destinatarioId){
             throw new BadRequestError("Você não pode transferir para você mesmo!");
         };

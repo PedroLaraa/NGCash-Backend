@@ -1,4 +1,5 @@
 import { Router } from 'express'
+import { GetTransaction } from '../controllers/transaction/GetTransaction'
 
 import { MakeTransaction } from '../controllers/transaction/MakeTransaction'
 
@@ -17,5 +18,6 @@ routes
     .get('/profile', authMiddleware, new UserProfile().getProfile)
     // Rotas de transações
     .post('/transaction', authMiddleware, new MakeTransaction().transaction)
+    .get('/transaction', authMiddleware, new GetTransaction().getTransactions)
 
 export default routes;
