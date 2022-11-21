@@ -57,8 +57,8 @@ export class MakeTransaction {
         };
 
         const transactionData = transactionRepository.create({
-            debitedAccountId: {debitedAccountId: userLogged.accountId}, 
-            creditedAccountId: {creditedAccountId: destinatarioId},
+            debitedAccountId: userLogged.accountId, 
+            creditedAccountId: destinatarioId,
             value: valor
         });
 
