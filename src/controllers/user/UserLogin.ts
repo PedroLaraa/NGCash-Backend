@@ -16,8 +16,6 @@ export class UserLogin {
 
         const user = await userRepository.findOneBy({username});
 
-        console.log(user)
-
         if(!user) {
             throw new BadRequestError('Usuário e/ou senha inválidos!');
         }

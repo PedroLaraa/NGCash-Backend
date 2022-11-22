@@ -12,8 +12,6 @@ export class AccountCreate {
 
         await accountRepository.save(newAccount);
 
-        console.log(newAccount);
-
         return res.status(201).json(newAccount)
 
     }

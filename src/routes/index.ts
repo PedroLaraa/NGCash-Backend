@@ -1,4 +1,5 @@
 import { Router } from 'express'
+import { AccountBalance } from '../controllers/account/AccountBalance'
 import { GetTransaction } from '../controllers/transaction/GetTransaction'
 
 import { MakeTransaction } from '../controllers/transaction/MakeTransaction'
@@ -19,5 +20,7 @@ routes
     // Rotas de transações
     .post('/transaction', authMiddleware, new MakeTransaction().transaction)
     .get('/transaction', authMiddleware, new GetTransaction().getTransactions)
+    // Rotas de balance
+    .get('/balance', authMiddleware, new AccountBalance().balance)
 
 export default routes;
