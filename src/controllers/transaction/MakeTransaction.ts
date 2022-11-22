@@ -14,50 +14,50 @@ import { DebitAccount } from "./DebitAccount";
 
 export class MakeTransaction {
 
-    async transaction(req: Request, res: Response){
+    async transaction(req: Request, res: Response) {
 
         const userLogged = req.user;
 
         const accountLoggedUser = userLogged.accountId
 
-        const {destinatario, valor} = req.body;
+        const { destinatario, valor } = req.body;
 
-        const userExists = await userRepository.findOneBy({username: destinatario});
+        const userExists = await userRepository.findOneBy({ username: destinatario });
 
-        const dataAccount = await accountRepository.findOneBy({id: accountLoggedUser})
+        const dataAccount = await accountRepository.findOneBy({ id: accountLoggedUser })
 
-        if(!accountLoggedUser){
+        if (!accountLoggedUser) {
             throw new BadRequestError("Faça login para continuar!");
         };
 
-        if(!userExists){
+        if (!userExists) {
             throw new BadRequestError("Destinatário informado inexistente!");
         };
 
         const destinatarioId = userExists.accountId
 
-        if(userLogged.accountId === destinatarioId){
+        if (userLogged.accountId === destinatarioId) {
             throw new BadRequestError("Você não pode transferir para você mesmo!");
         };
 
-        if(!destinatario){
+        if (!destinatario) {
             throw new BadRequestError("É necessário inserir o destinatário da transferência!");
         };
 
-        if(!valor){
+        if (!valor) {
             throw new BadRequestError("É necessário inserir o valor da transferência!");
         };
 
-        if(!dataAccount){
+        if (!dataAccount) {
             throw new BadRequestError("Conta não encontrada!");
         };
 
-        if(dataAccount.balance < valor){
+        if (dataAccount.balance < valor) {
             throw new BadRequestError("Saldo insuficiente!");
         };
 
         const transactionData = transactionRepository.create({
-            debitedAccountId: userLogged.accountId, 
+            debitedAccountId: userLogged.accountId,
             creditedAccountId: destinatarioId,
             value: valor
         });

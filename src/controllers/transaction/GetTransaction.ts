@@ -18,13 +18,12 @@ export class GetTransaction {
 
         const transaction = await transactionRepository.find({
             relations: {
-                creditedAccountId: true
+                creditedAccountId: true,
+                debitedAccountId: true
             }
         })
 
-        const transactionCredit = transaction.filter(v => v.creditedAccountId)  
-
-        return res.json(transactionCredit);
+        return res.status(200).json(transaction);
     };
 
 }

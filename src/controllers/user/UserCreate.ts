@@ -15,13 +15,21 @@ export class UserCreate {
         const {username, password} = req.body
 
         const userExists = await userRepository.findOneBy({username})
+
+        var regex = /^(?=(?:.*?[0-9]){1})(?=(?:.*?[A-Z]){1})/
         
         if(userExists) {
             throw new BadRequestError('User já utilizado!')
         }
 
+        if(username.length < 3){
+            throw new BadRequestError('Usuário deve conter ao menos 3 caracteres')
+        }
+
         if(password.length < 8){
             throw new BadRequestError('Senha deve conter pelo menos 8 caracteres!')
+        }else if(!regex.exec(password)){
+            throw new BadRequestError('Senha deve conter pelo menos 1 número e 1 letra maiúscula!')
         }
 
         const hashPassword = await bcrypt.hash(password, 10)

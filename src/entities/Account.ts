@@ -5,7 +5,6 @@ import { Transaction } from "./Transaction";
 @Entity('Accounts')
 export class Account {
 
-    @OneToMany(() => Transaction, (transaction) => transaction.debitedAccountId)
     @PrimaryGeneratedColumn()
     id: number
 
