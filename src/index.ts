@@ -26,4 +26,4 @@ AppDataSource.initialize().then(() => {
     console.log('Server rodando e db conectado!!!', process.env.PORT)
 	return app.listen(process.env.PORT);
 
-})
+});
