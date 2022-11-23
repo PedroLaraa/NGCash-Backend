@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 
-import { BadRequestError } from "../../helpers/api-erros";
+import { BadRequestError, UnauthorizedError } from "../../helpers/api-erros";
 
 import { userRepository } from "../../repositories/userRepository";
 
@@ -17,13 +17,15 @@ export class UserLogin {
         const user = await userRepository.findOneBy({username});
 
         if(!user) {
-            throw new BadRequestError('Usuário e/ou senha inválidos!');
+            res.json('Usuário e/ou senha inválidos!')
+            throw new UnauthorizedError('Usuário e/ou senha inválidos!');
         }
 
         const verifyPassword = await bcrypt.compare(password, user.password);
 
         if(!verifyPassword){
-            throw new BadRequestError('Usuário e/ou senha inválidos!');
+            res.json('Usuário e/ou senha inválidos!')
+            throw new UnauthorizedError('Usuário e/ou senha inválidos!');
         };
 
         const token = jwt.sign({id: user.id}, process.env.JWT_PASS ?? '', {expiresIn: '24h'});
