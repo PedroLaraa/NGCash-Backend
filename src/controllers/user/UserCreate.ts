@@ -19,17 +19,30 @@ export class UserCreate {
         var regex = /^(?=(?:.*?[0-9]){1})(?=(?:.*?[A-Z]){1})/
         
         if(userExists) {
-            throw new BadRequestError('User já utilizado!')
+            console.log('User já utilizado!')
+            return res.json({
+                message: 'User já utilizado!',
+                sucess: false
+        })
         }
 
         if(username.length < 3){
-            throw new BadRequestError('Usuário deve conter ao menos 3 caracteres')
+            return res.json({
+                message: 'Usuário deve conter ao menos 3 caracteres',
+                sucess: false
+            })
         }
 
         if(password.length < 8){
-            throw new BadRequestError('Senha deve conter pelo menos 8 caracteres!')
+            return res.json({
+                message:'Senha deve conter pelo menos 8 caracteres!',
+                sucess: false
+            })
         }else if(!regex.exec(password)){
-            throw new BadRequestError('Senha deve conter pelo menos 1 número e 1 letra maiúscula!')
+            return res.json({
+                message: 'Senha deve conter pelo menos 1 número e 1 letra maiúscula!',
+                sucess: false
+        })
         }
 
         const hashPassword = await bcrypt.hash(password, 10)
@@ -46,7 +59,10 @@ export class UserCreate {
         });
 
         if (errors.length > 0) {
-            throw new Error(`Usuário ou senha inválidos!`)
+            return res.json({
+                message: `Usuário ou senha inválidos!`,
+                sucess: false
+            })
         } else {
 
             await accountRepository.save(newAccount);

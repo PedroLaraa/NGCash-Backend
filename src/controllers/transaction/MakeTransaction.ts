@@ -27,33 +27,54 @@ export class MakeTransaction {
         const dataAccount = await accountRepository.findOneBy({ id: accountLoggedUser })
 
         if (!accountLoggedUser) {
-            throw new BadRequestError("Faça login para continuar!");
+            return ({
+                message: "Faça login para continuar!",
+                sucess: false
+            });
         };
 
         if (!userExists) {
-            throw new BadRequestError("Destinatário informado inexistente!");
+            return ({
+                message: "Destinatário informado inexistente!",
+                sucess: false
+            });
         };
 
         const destinatarioId = userExists.accountId
 
         if (userLogged.accountId === destinatarioId) {
-            throw new BadRequestError("Você não pode transferir para você mesmo!");
+            return ({
+                message: "Você não pode transferir para você mesmo!",
+                sucess: false
+            });
         };
 
         if (!destinatario) {
-            throw new BadRequestError("É necessário inserir o destinatário da transferência!");
+            return ({
+                message: "É necessário inserir o destinatário da transferência!",
+                sucess: false
+            });
         };
 
         if (!valor) {
-            throw new BadRequestError("É necessário inserir o valor da transferência!");
+            return ({
+                message: "É necessário inserir o valor da transferência!",
+                sucess: false
+            });
         };
 
         if (!dataAccount) {
-            throw new BadRequestError("Conta não encontrada!");
+            return ({
+                message: "Conta não encontrada!",
+                sucess: false
+            });
         };
 
         if (dataAccount.balance < valor) {
-            throw new BadRequestError("Saldo insuficiente!");
+            return ({
+                message: "Saldo insuficiente!",
+                sucess: false
+            });
         };
 
         const transactionData = transactionRepository.create({

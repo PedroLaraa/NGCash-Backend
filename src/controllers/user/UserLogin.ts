@@ -17,15 +17,19 @@ export class UserLogin {
         const user = await userRepository.findOneBy({username});
 
         if(!user) {
-            res.json('Usuário e/ou senha inválidos!')
-            throw new UnauthorizedError('Usuário e/ou senha inválidos!');
+            return res.json({
+                message: 'Usuário e/ou senha inválidos!',
+                auth: false
+            })
         }
 
         const verifyPassword = await bcrypt.compare(password, user.password);
 
         if(!verifyPassword){
-            res.json('Usuário e/ou senha inválidos!')
-            throw new UnauthorizedError('Usuário e/ou senha inválidos!');
+            return res.json({
+                message: 'Usuário e/ou senha inválidos!',
+                auth: false
+            })
         };
 
         const token = jwt.sign({id: user.id}, process.env.JWT_PASS ?? '', {expiresIn: '24h'});
@@ -35,7 +39,8 @@ export class UserLogin {
         return res.json({
             user: userLogin,
             accountId: userLogin.accountId,
-            token: token
+            token: token,
+            auth: true
         });
 
     };
