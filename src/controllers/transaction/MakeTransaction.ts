@@ -27,14 +27,14 @@ export class MakeTransaction {
         const dataAccount = await accountRepository.findOneBy({ id: accountLoggedUser })
 
         if (!accountLoggedUser) {
-            return ({
+            return res.json({
                 message: "Faça login para continuar!",
                 sucess: false
             });
         };
 
         if (!userExists) {
-            return ({
+            return res.json({
                 message: "Destinatário informado inexistente!",
                 sucess: false
             });
@@ -43,35 +43,35 @@ export class MakeTransaction {
         const destinatarioId = userExists.accountId
 
         if (userLogged.accountId === destinatarioId) {
-            return ({
+            return res.json({
                 message: "Você não pode transferir para você mesmo!",
                 sucess: false
             });
         };
 
         if (!destinatario) {
-            return ({
+            return res.json({
                 message: "É necessário inserir o destinatário da transferência!",
                 sucess: false
             });
         };
 
         if (!valor) {
-            return ({
+            return res.json({
                 message: "É necessário inserir o valor da transferência!",
                 sucess: false
             });
         };
 
         if (!dataAccount) {
-            return ({
+            return res.json({
                 message: "Conta não encontrada!",
                 sucess: false
             });
         };
 
         if (dataAccount.balance < valor) {
-            return ({
+            return res.json({
                 message: "Saldo insuficiente!",
                 sucess: false
             });
@@ -85,9 +85,12 @@ export class MakeTransaction {
 
         new DebitAccount().transaction(valor, accountLoggedUser, req, res)
 
+
         new CreditAccount().transaction(valor, destinatarioId, req, res)
 
+
         await transactionRepository.save(transactionData);
+
 
         return res.json(transactionData);
 
