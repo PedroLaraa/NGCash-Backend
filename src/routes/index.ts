@@ -18,7 +18,7 @@ routes
     .post('/login', new UserLogin().login)
     .get('/profile', authMiddleware, new UserProfile().getProfile)
     // Rotas de transações
-    .post('/transactions', authMiddleware, new MakeTransaction().transaction)
+    .post('/make-transaction', authMiddleware, new MakeTransaction().transaction)
     .get('/transaction', authMiddleware, new GetTransaction().getTransactions)
     // Rotas de balance
     .get('/balance', authMiddleware, new AccountBalance().balance)
