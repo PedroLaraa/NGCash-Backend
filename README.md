@@ -1,6 +1,6 @@
-# NGCash Backend
+# 👨‍💻 | NGCash Backend
 
-Instruções para rodar o projeto:
+🚀 | Instruções para rodar o projeto:
  
  - É necessário ter o Docker, Docker Compose e o NodeJs instalados localmente!!!
  - Inicie um novo terminal ;
@@ -8,7 +8,7 @@ Instruções para rodar o projeto:
  - A porta alocada é a "3030" ;
  
  #
- Alternativa 2:
+ 🚀 | Alternativa 2:
  
  - Abra o arquivo no seu editor ;
  - Execute o comando " npm install "
