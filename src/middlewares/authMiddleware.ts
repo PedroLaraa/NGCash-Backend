@@ -14,11 +14,7 @@ export const authMiddleware = async (req: Request, res: Response, next: NextFunc
         return res.json('Não autorizado!');
     };
 
-    const token = authorization.split(' ')[1];
-
-    // FIXME JWT EXPIRA, CRASHA O APP E NÃO RETORNA NADA PARA FRONT
-
-    jwt.verify(token, process.env.JWT_PASS ?? '', function(err, decoded){
+    jwt.verify(authorization.split(' ')[1], process.env.JWT_PASS ?? '', function(err, decoded){
         if(err){
             return res.json({
                 message: 'Token de sessão expirado! Faça Logout e depois Login!',
@@ -26,6 +22,11 @@ export const authMiddleware = async (req: Request, res: Response, next: NextFunc
             })
         }
     })
+
+    const token = authorization.split(' ')[1];
+
+    // FIXME JWT EXPIRA, CRASHA O APP E NÃO RETORNA NADA PARA FRONT
+
 
     const { id } = jwt.verify(token, process.env.JWT_PASS ?? '') as JwtPayload;
 
