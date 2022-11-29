@@ -11,6 +11,7 @@
 - TypeScript;
 - TypeOrm;
 - Postgres;
+- Docker;
 - Bcrypt;
 - JsonWebToken;
 - Express.
