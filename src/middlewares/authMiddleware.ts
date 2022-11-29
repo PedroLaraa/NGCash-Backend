@@ -25,9 +25,6 @@ export const authMiddleware = async (req: Request, res: Response, next: NextFunc
 
     const token = authorization.split(' ')[1];
 
-    // FIXME JWT EXPIRA, CRASHA O APP E NÃO RETORNA NADA PARA FRONT
-
-
     const { id } = jwt.verify(token, process.env.JWT_PASS ?? '') as JwtPayload;
 
 
