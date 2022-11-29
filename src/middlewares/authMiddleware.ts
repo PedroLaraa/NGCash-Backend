@@ -27,7 +27,6 @@ export const authMiddleware = async (req: Request, res: Response, next: NextFunc
 
     const { id } = jwt.verify(token, process.env.JWT_PASS ?? '') as JwtPayload;
 
-
     const userExists = await userRepository.findOneBy({ id });
 
     if (!userExists) {
