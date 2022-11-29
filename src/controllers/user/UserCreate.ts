@@ -19,7 +19,6 @@ export class UserCreate {
         var regex = /^(?=(?:.*?[0-9]){1})(?=(?:.*?[A-Z]){1})/
         
         if(userExists) {
-            console.log('User já utilizado!')
             return res.json({
                 message: 'User já utilizado!',
                 sucess: false
