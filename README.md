@@ -1,5 +1,26 @@
 # 👨‍💻 | NGCash Backend
 
+💭 | Sobre o projeto:
+
+- Foi desenvolvido devido a um teste para a empresa NGCash (banco digital), onde o objetivo era criar um App Full Stack, para transações de dinheiro entre usuários do App serem realizadas!
+
+#
+
+🐱‍👤 | Stack Back-End:
+
+- TypeScript;
+- TypeOrm;
+- Postgres;
+- Bcrypt;
+- JsonWebToken;
+- Express.
+
+#
+
+🎲 [Repositório Front-End](https://github.com/PedroLaraa/NGCash-FrontEnd) 
+
+#
+
 🚀 | Instruções para rodar o projeto:
  
  - É necessário ter o Docker, Docker Compose e o NodeJs instalados localmente!!!
